@@ -1,0 +1,21 @@
+/**
+ * 
+ */
+package oo.ego8769.hue04.bsp1;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+/**
+ * @author Elisabeth
+ *
+ */
+public class NameTest {
+
+	@Test
+	public void test() {
+		fail("Not yet implemented");
+	}
+
+}

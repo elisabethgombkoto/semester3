@@ -1,0 +1,12 @@
+package oo.ego8769.hue06.labirinth;
+
+public class Wall extends MapeSite {
+
+	@Override
+	public void enter(Player player) {
+		int a = player.get_lifeCounter().get_values();
+		a--;
+		player.get_lifeCounter().set_values(a);
+
+	}
+}

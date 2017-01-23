@@ -1,0 +1,5 @@
+package oo.ego8769.hue06.labirinth;
+
+public enum Direction {
+	north, south, west, east
+}

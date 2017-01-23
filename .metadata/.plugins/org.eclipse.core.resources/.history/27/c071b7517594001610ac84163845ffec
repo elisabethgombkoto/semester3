@@ -1,0 +1,18 @@
+package hue02.SortierAlgorithmen;
+
+import static org.junit.Assert.assertArrayEquals;
+
+import org.junit.Test;
+
+public class SortTest {
+
+	@Test
+	public void test() {
+		Integer[] array = { 9, 6, 3, 2, 5, 5, 7, 7, 5, 8, 7, 4, 1 };
+		Integer[] expecteds = { 1, 2, 3, 4, 5, 5, 5, 6, 7, 7, 7, 8, 9 };
+		Sort sort = new QuickSort();
+		Comparable[] result = sort.sort(array);
+		assertArrayEquals(expecteds, result);
+	}
+
+}

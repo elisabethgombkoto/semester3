@@ -1,0 +1,21 @@
+/**ego8769
+ * 
+ */
+package oo.ego8769.hue03.bsp01;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+/**
+ * @author Elisabeth
+ *
+ */
+public class DistributionCenterTest {
+
+	@Test
+	public void test() {
+		fail("Not yet implemented");
+	}
+
+}

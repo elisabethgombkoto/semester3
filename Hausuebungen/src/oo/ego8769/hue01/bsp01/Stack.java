@@ -1,0 +1,87 @@
+//ego8769
+
+package oo.ego8769.hue01.bsp01;
+
+public class Stack {
+
+	private int[] _gleis1;
+	private int _length = 0;
+	private int _top = -1;
+	private int[] _gleis2;
+	private int pCounter = 0;
+
+	public Stack(int size) { // Konstruktor
+		_top = -1;
+		_length = size;
+		_gleis1 = new int[_length];
+
+	}
+
+	public void push(int x) {
+		if (!isFull()) {
+			_top++;
+			_gleis1[_top] = x;
+		}
+	}
+
+	public boolean isFull() {
+		if (_top == _gleis1.length - 1) {
+			return true; // elegant lautet in eine zeiele das ganze
+		} else { // return(_top==s.length);
+			return false;
+		}
+	}
+
+	public boolean isEmpty() {
+		if (_top == (-1)) {
+			return true; // elegant lautet in eine zeiele das ganze
+		} else { // return(_top==0);
+			return false;
+		}
+
+	}
+
+	@SuppressWarnings("null")
+	public int pop() {
+
+		if (!isEmpty()) {
+			int temp = _gleis1[_top];
+			_top--;
+			return temp;
+		}
+		return -1;
+	}
+
+	public int top() {
+		if (!isEmpty())
+			return _gleis1[_top];
+		return -1;
+	}
+
+	public void permutation(int[] array) {
+		_gleis2 = array;
+		pCounter = 0;
+
+		for (int i = 1; i <= _gleis2.length; i++) {
+			push(i);
+			checkPop();
+		}
+		if (isEmpty()) {
+
+			System.out.println("Geht");
+		} else {
+			System.out.println("Geht ned");
+		}
+	}
+
+	private void checkPop() {
+		if (pCounter < _gleis2.length) {
+			if (_gleis2[pCounter] == top()) {
+				pop();
+				pCounter++;
+				checkPop();
+			}
+		}
+	}
+
+}

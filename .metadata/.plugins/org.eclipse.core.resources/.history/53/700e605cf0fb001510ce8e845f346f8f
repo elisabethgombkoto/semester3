@@ -1,0 +1,45 @@
+/**
+ * 
+ */
+package oo.ego8769.hue04.bsp1;
+
+import static org.junit.Assert.*;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import org.junit.Test;
+
+
+/**
+ * @author Elisabeth
+ *
+ */
+public class NameTest {
+	private SimpleDateFormat _df = new SimpleDateFormat("dd.MM.yyyy");
+	private Date _bdate= new Date();	
+	
+	@Test
+	public void PersonTestCreat() {
+			try {
+				_bdate=	_df.parse("2.5.2785");
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			Person person1 = new Person(new Name("Miki","Mouse",""), Gender.male, _bdate);
+
+}
+
+	{
+		try {
+			_bdate=	_df.parse("2.5.2785");
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Person person2 = new Person(new Name("Mini","Mousey",""), Gender.female, _bdate);
+
+	}
+}

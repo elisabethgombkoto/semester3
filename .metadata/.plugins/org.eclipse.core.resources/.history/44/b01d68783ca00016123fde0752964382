@@ -1,0 +1,56 @@
+package hue03.Chees;
+
+import java.util.ArrayList;
+
+public class CheeseHole {
+	private char[][] cheese;
+	private ArrayList<Hole> holes;
+
+	public CheeseHole(char[][] cheese) {
+		this.cheese = cheese;
+		holes = new ArrayList<>();
+
+	}
+
+	public int counter() {
+		int zeilen = 1;
+		int spalten = 1;
+		for (zeilen = 1; !(cheese[zeilen].equals('|')); zeilen++) {
+			for (spalten = 1; !(cheese[spalten].equals('|')); spalten++) {
+				if (cheese[zeilen][spalten] == '*') {
+					cheese[zeilen][spalten] = '!';
+				createHole();
+
+				}
+			}
+
+		}
+		return 0;
+
+	}
+
+	private Hole createHole() {
+		Hole hole=new Hole(0, 0);
+		hole.setHoleNummber(holes.size());
+		hole.setHoleSize(1);
+		
+	}
+
+	public char[][] getCheese() {
+		return cheese;
+	}
+
+	public void setCheese(char[][] cheese) {
+		this.cheese = cheese;
+	}
+
+	public ArrayList<Hole> getHoles() {
+		return holes;
+	}
+
+	public void setHoles(ArrayList<Hole> holes) {
+		this.holes = holes;
+	}
+
+
+}

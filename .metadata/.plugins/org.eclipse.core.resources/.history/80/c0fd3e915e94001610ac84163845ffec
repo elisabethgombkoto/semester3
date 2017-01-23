@@ -1,0 +1,5 @@
+package hue02.SortierAlgorithmen;
+
+public interface Sort {
+
+}

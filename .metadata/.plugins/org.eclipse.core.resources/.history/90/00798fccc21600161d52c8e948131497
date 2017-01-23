@@ -1,0 +1,19 @@
+package oo.ego8769.hue06.labirinth;
+
+import oo.ego8769.hue04.bsp1.Gender;
+
+public class Game {
+
+	public static void main(String[] args) {
+		Field f1 = new Field(IdGenerator.getGenerator(), "f1", new Life(3), "hfjf");
+		Field f2 = new Field(IdGenerator.getGenerator(), "f2", null, "hfmhfh");
+		Field f3 = new Field(IdGenerator.getGenerator(), "f3", null, "hfmhfh");
+		Door d1 = new Door("d1", DoorStatus.open, f1, f2, "hgdtedjez");
+		Player p1 = new Player("steve", Gender.male, new Life(3), f1);
+		Neighborhood n = new Neighborhood();
+		n.conect(f1, f2, Direction.east);
+
+		f1.set_neighbor(d1);
+		p1.move(Direction.east);
+	}
+}

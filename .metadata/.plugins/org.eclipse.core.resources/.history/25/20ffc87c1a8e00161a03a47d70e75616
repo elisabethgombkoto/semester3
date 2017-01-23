@@ -1,0 +1,62 @@
+package hue01.grobanalyse.ego8769;
+
+import java.util.Random;
+
+public class Char {
+	private String _str;
+	private char _ch;
+
+	public Char(String str, char ch) {
+		_str = str;
+		_ch = ch;
+
+	}
+
+	/*
+	 * Lösungsidee: von links lositariren bis die erste char gefunden wird.
+	 */
+	public int findeCharLeft() {
+		int pos = 0;
+
+		for (pos = 0; pos < _str.length(); pos++) {
+			if (_str.charAt(pos) == _ch) {
+				return pos;
+			}
+		}
+		return -1;
+	}
+
+	// Lösungsidee:
+	// nicht von rechts anfangen
+	// sondern man sollte die letzte Platz von links ermitteln
+	// diese sollte als return Wert dar stellen
+
+	public int findeCharRight() {
+		int remember = -1;
+		for (int pos = 0; pos < _str.length(); pos++) {
+			if (_str.charAt(pos) == _ch) {
+				remember = pos;
+			}
+		}
+		return remember;
+
+	}
+	// Random Aufgabestellung
+	// zufalls Zahl kann öffters vorkommen
+	// Mathemathise analyse des Problems
+	// annahme der gesuchte Buchstabe kommt in den Array vor
+
+	public int findCharRandom() {
+		int lowerBound = 0;
+		int upperBound = _str.length() ;
+		//Random random= new Random();
+		int randomNummber= (int)(Math.random() * upperBound) + lowerBound; 
+	    System.out.println(randomNummber);
+
+		while (_str.charAt(randomNummber)!= _ch) {
+			randomNummber=(int)(Math.random()*upperBound+lowerBound);
+		}
+		return randomNummber;
+
+	}
+}

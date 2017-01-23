@@ -1,0 +1,29 @@
+package hue02.SortierAlgorithmen;
+
+public class InsertionSort implements Sort {
+
+	public InsertionSort(int[] sortieren) {
+		super(sortieren);
+
+	}
+
+	@Override
+	public int[] sort(int[] sortieren) {
+		int temp;
+		int i;
+		int j = 0;
+		for (i = 1; i < sortieren.length; i++) {
+			temp = sortieren[i];
+			j = i;
+			while (j > 0 && sortieren[j - 1] > temp) {
+				sortieren[j] = sortieren[j - 1];
+				j--;
+			}
+			sortieren[j] = temp;
+		}
+		System.out.println("Anzahl der Gesamtdurchlaeufe bei insertionSort der auseren for-Schleife:" + i);
+		System.out.println("Anzahl der Gesamtdurchlauefe bei insertionSort der inneren for-Schleife:" + j);
+		return sortieren;
+	}
+
+}

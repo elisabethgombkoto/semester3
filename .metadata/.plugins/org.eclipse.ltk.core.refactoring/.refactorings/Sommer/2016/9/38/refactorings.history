@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename type &apos;oo.ueben.widerholung.Serversoket&apos; to &apos;SimpleServer&apos;&#x0D;&#x0A;- Original project: &apos;Sommer&apos;&#x0D;&#x0A;- Original element: &apos;oo.ueben.widerholung.Serversoket&apos;&#x0D;&#x0A;- Renamed element: &apos;oo.ueben.widerholung.SimpleServer&apos;&#x0D;&#x0A;- Update references to refactored element&#x0D;&#x0A;- Rename similarly named elements&#x0D;&#x0A;- Update textual occurrences in comments and strings" description="Rename type &apos;Serversoket&apos;" flags="589830" id="org.eclipse.jdt.ui.rename.type" input="/src&lt;oo.ueben.widerholung{Serversoket.java[Serversoket" matchStrategy="1" name="SimpleServer" qualified="false" references="true" similarDeclarations="true" stamp="1474457024664" textual="false" version="1.0"/>
+</session>

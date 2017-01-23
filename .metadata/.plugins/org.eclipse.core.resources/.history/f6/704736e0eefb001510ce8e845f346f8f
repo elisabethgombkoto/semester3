@@ -1,0 +1,28 @@
+/**
+ * 
+ */
+package oo.ego8769.hue04.bsp1;
+
+import static org.junit.Assert.*;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import org.junit.Test;
+
+
+/**
+ * @author Elisabeth
+ *
+ */
+public class NameTest {
+	private SimpleDateFormat _df = new SimpleDateFormat("dd.MM.yyyy");
+	private Date _bdate= new Date();
+		_bdate=	_df.parse("2.5.2785");
+	Person Karl = new Person(new Name("Miki","Mouse",""), Gender.male, _bdate);
+	@Test
+	public void MarryTest() {
+		
+	
+}
+}

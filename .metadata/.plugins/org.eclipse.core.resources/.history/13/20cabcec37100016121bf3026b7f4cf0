@@ -1,0 +1,21 @@
+package oo.ego8769.hue06.labirinth;
+
+public class MapeSite {
+	private Direction _direction;
+
+	// public MapeSite {
+
+	// }
+
+	protected void Enter() {
+
+	}
+
+	public Direction getDirection() {
+		return _direction;
+	}
+
+	public void setDirection(Direction _direction) {
+		this._direction = _direction;
+	}
+}

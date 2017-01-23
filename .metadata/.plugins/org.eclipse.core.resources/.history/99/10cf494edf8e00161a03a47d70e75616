@@ -1,0 +1,18 @@
+package hue01.grobanalyse.ego8769;
+
+public class RandomNummber {
+
+	private int _min;
+	private int _max;
+
+	public RandomNummber(int min, int max) {
+		min=_min;
+		max=_max;
+	}
+	public int createRandomNummber(int upperBound, int lowerBound) {
+		int nummber = (int) Math.floor(Math.random() * (upperBound - lowerBound + 1)) + lowerBound;
+		System.out.println(nummber);
+		 
+		return nummber;
+
+}

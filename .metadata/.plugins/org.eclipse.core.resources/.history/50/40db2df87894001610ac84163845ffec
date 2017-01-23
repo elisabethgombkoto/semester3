@@ -1,0 +1,41 @@
+package hue02.SortierAlgorithmen;
+
+public class QuickSort implements Sort {
+
+	@SuppressWarnings("rawtypes")
+	@Override
+	public Comparable[] sort(Comparable[] sortieren) {
+
+		return quicksort(sortieren, 0, sortieren.length - 1);
+
+	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	private Comparable[] quicksort(Comparable[] daten, int left, int right) {
+		if (left < right) {
+			int l = left;
+			int r = right;
+			Comparable pivot = daten[(l + r) / 2];
+			while (l <= r) {
+				while (daten[l].compareTo(pivot) < 0) {
+					l++;
+				}
+				while (daten[r].compareTo(pivot) > 0) {
+					r--;
+				}
+				if (l <= r) {
+					Comparable temp = daten[l];
+					daten[l] = daten[r];
+					daten[r] = temp;
+					l++;
+					r--;
+				}
+			}
+
+			quicksort(daten, left, r);
+			quicksort(daten, l, right);
+		}
+		return daten;
+	}
+
+}

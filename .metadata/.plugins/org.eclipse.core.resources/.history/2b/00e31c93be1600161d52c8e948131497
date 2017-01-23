@@ -1,0 +1,153 @@
+package oo.ego8769.hue06.labirinth;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import oo.ego8769.hue04.bsp1.Gender;
+
+public class Player {
+	private String _name;
+	private Gender _gender;
+	private Field _position;
+	private ArrayList<Item> backpack = new ArrayList<>();
+	private Life _lifeCounter;
+
+	public Player(String name, Gender gender, Life life, Field position) {
+		_name = name;
+		_gender = gender;
+		_lifeCounter = life;
+		_position = position;
+
+	}
+
+	public void move(Direction direction) {
+		if (get_position().get_item() != null) {
+			keep(get_position().get_item());
+		}
+		get_position().get_neighbor().enter(this);
+		// es sollte MapeSite sein...oder nicht
+		// weil wenn f wall sollte dass ausgefürt werden und wenn f tür diese
+		// enter
+		// also bei get neighborn sollte ich von mein rückgabe Wert (entweder
+		// Field oder Neighbor) zum MapeSite zurück kommen
+		// es ist aber nich zuweisungs kompatiebel....was macht man dann?
+
+	}
+
+	public void keep(Item l) {
+		if (get_position().get_item() instanceof Life) {
+
+			// TODO Habe ich es richtig gecastet??? wie kann ich es polimorpf
+			// machen??? hier soll es sein oder zurück zu ITEM oder ist es ein
+			// interface???
+			int lifecounter = get_lifeCounter().get_values();
+			lifecounter++;
+			get_lifeCounter().set_values(lifecounter);
+			get_position().set_item(null);
+		} else {
+			backpack.add(l);
+		}
+	}
+
+	public String get_name() {
+		return _name;
+	}
+
+	public void set_name(String _name) {
+		this._name = _name;
+	}
+
+	public Gender get_gender() {
+		return _gender;
+	}
+
+	public void set_gender(Gender _gender) {
+		this._gender = _gender;
+	}
+
+	public Field get_position() {
+		return _position;
+	}
+
+	public void set_position(Field _position) {
+		this._position = _position;
+	}
+
+	public ArrayList<Item> getBackpack() {
+		return backpack;
+	}
+
+	public void setBackpack(ArrayList<Item> backpack) {
+		this.backpack = backpack;
+	}
+
+	public Apple containsAppleBackpack() {
+		for (Item apple : backpack) {
+			if (apple instanceof Apple) {
+				return (Apple) apple;
+			}
+		}
+		return null;
+	}
+
+	public Key containsKeyBackpack() {
+		for (Item key : backpack) {
+			if (key instanceof Key) {
+				return (Key) key;
+			}
+		}
+		return null;
+	}
+
+	public Milk containsMilkBackpack() {
+		for (Item milk : backpack) {
+			if (milk instanceof Milk) {
+				return (Milk) milk;
+			}
+		}
+		return null;
+	}
+
+	public List<Apple> containsAppleBackpackList() {
+		List<Apple> appleList = new ArrayList<Apple>();
+		for (Item apple : backpack) {
+			if (apple instanceof Apple) {
+				appleList.add((Apple) apple);
+			}
+		}
+		return appleList;
+	}
+
+	public List<Milk> containsMilkBackpackList() {
+		List<Milk> milkList = new ArrayList<Milk>();
+		for (Item milk : backpack) {
+			if (milk instanceof Milk) {
+				milkList.add((Milk) milk);
+			}
+		}
+		return milkList;
+	}
+
+	public List<Key> containsKeyBackpackList() {
+		List<Key> keyList = new ArrayList<Key>();
+		for (Item key : backpack) {
+			if (key instanceof Key) {
+				keyList.add((Key) key);
+			}
+		}
+		return keyList;
+	}
+
+	public Life get_lifeCounter() {
+		return _lifeCounter;
+	}
+
+	public void set_lifeCounter(Life _lifeCounter) {
+		this._lifeCounter = _lifeCounter;
+	}
+
+	public void add(ArrayList<Player> players) {
+		// TODO
+	}
+
+}

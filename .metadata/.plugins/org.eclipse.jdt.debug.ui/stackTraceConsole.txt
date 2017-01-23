@@ -1,0 +1,7 @@
+public int getListCount() {
+		return listCount;
+	}
+
+	public void setListCount(int listCount) {
+		this.listCount = listCount;
+	}

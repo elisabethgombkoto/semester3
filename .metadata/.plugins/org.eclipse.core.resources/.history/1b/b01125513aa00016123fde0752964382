@@ -1,0 +1,12 @@
+package hue03.Chees;
+
+public class Hole {
+	private int holeNummber;
+	private int holeSize;
+	
+	public Hole(int holeNummber, int holeSize){
+		this.holeNummber=holeNummber;
+		this.holeSize=holeSize;
+	}
+
+}

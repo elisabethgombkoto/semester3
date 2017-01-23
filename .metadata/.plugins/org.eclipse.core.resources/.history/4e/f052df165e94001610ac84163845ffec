@@ -1,0 +1,11 @@
+package hue02.SortierAlgorithmen;
+
+public abstract class Sort {
+	private int[] unsorted;
+
+	public Sort(int[] sortieren) {
+		unsorted = sortieren;
+	}
+
+	public abstract int[] sort(int[] sortieren);
+}

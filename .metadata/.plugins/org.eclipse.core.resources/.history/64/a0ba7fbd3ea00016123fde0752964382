@@ -1,0 +1,133 @@
+package hue03.Chees;
+
+import java.util.ArrayList;
+
+public class CheeseHole {
+	private char[][] cheese;
+	private ArrayList<Hole> holes;
+
+	public CheeseHole(char[][] cheese) {
+		this.cheese = cheese;
+		holes = new ArrayList<>();
+
+	}
+
+	public int counter() {
+		int zeilen = 1;
+		int spalten = 1;
+		for (zeilen = 1; !(cheese[zeilen].equals('|')); zeilen++) {
+			for (spalten = 1; !(cheese[spalten].equals('|')); spalten++) {
+				if (cheese[zeilen][spalten] == '*') {
+					cheese[zeilen][spalten] = '!';
+					
+					holes.add(createHole());
+					
+					findHoleMember(zeilen,spalten);
+
+				}
+			}
+
+		}
+		return 0;
+
+	}
+
+	private void findHoleMember(int zeilen, int spalten) {
+		zeilen=row;
+		int c;
+		if (cheese[row + 1][c - 1] == '*') {
+			cheese[row + 1][c - 1] = '+';
+			row++;
+			c--;
+			count++;
+
+		} else {
+			if (cheese[row + 1][c] == '*') {
+				cheese[row + 1][c] = '+';
+				row++;
+				count++;
+
+			} else {
+				if (cheese[row + 1][c + 1] == '*') {
+					cheese[row + 1][c + 1] = '+';
+					row++;
+					c++;
+					count++;
+
+				} else {
+					if (cheese[row][c + 1] == '*') {
+						cheese[row][c + 1] = '+';
+						c++;
+						count++;
+
+					} else {
+						if (cheese[row - 1][c + 1] == '*') {
+							cheese[row - 1][c + 1] = '+';
+							row--;
+							c++;
+							count++;
+
+						} else {
+							if (cheese[row - 1][c] == '*') {
+								cheese[row - 1][c] = '+';
+								row--;
+								count++;
+
+							} else {
+
+								if (cheese[row - 1][c - 1] == '*') {
+									cheese[row - 1][c - 1] = '+';
+									row--;
+									c--;
+									count++;
+
+								} else {
+									if (cheese[row][c - 1] == '*') {
+										cheese[row][c - 1] = '+';
+										c--;
+										count++;
+									}
+								}
+								if (biggestEye < count) {
+									biggestEye = count;
+								}
+								count = 0;
+								return false;
+							}
+						}
+					}
+				}
+			}
+
+		}
+		return findEyeMember(row, c);
+	}
+
+		
+	}
+
+	private Hole createHole() {
+		Hole hole = new Hole(0, 0);
+		hole.setHoleNummber(holes.size()+1);
+		hole.setHoleSize(1);
+		return hole;
+
+	}
+
+	public char[][] getCheese() {
+		return cheese;
+	}
+
+	public void setCheese(char[][] cheese) {
+		this.cheese = cheese;
+	}
+
+	public ArrayList<Hole> getHoles() {
+		return holes;
+	}
+
+	public void setHoles(ArrayList<Hole> holes) {
+		this.holes = holes;
+	}
+
+}

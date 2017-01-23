@@ -1,0 +1,48 @@
+package oo.ego8769.hue06.labirinth;
+
+public class Field extends MapeSite {
+
+	private IdGenerator _id;
+	private String _name;
+	private String _description;
+	private Item _item;
+	private Player _player;
+	/*private Neighbor _neighbor;
+	private Door _door;
+	private Wall _wall;*/
+	private MapeSite[] _neighbors = new MapeSite[4];
+
+	public Field(IdGenerator id, String name, Item item, String description) {
+
+		_id = id;
+		_item = item;
+		_name = name;
+		_description = description;
+	}
+
+	
+	@Override
+	public void enter(Player player, ) {
+		Field f1 = player.get_position();
+		MapeSite f2 = get_neighbor(direction);
+		player.set_position(f2);
+	}
+	public Item get_item() {
+		return _item;
+	}
+
+	public void set_item(Item _item) {
+		this._item = _item;
+	}
+
+	
+
+	public MapeSite get_neighbor(Direction direction) {
+		return _neighbors[direction.ordinal()];
+	}
+
+	public void set_neighbor(MapeSite neighbor, Direction direction) {
+		_neighbors[direction.ordinal()] = neighbor;
+	}
+
+}

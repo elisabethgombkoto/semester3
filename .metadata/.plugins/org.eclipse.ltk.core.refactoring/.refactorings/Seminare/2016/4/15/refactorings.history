@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename type &apos;oo.ego8769.sem07.person.AgePersobComparator&apos; to &apos;AgePersonComparator&apos;&#x0D;&#x0A;- Original project: &apos;Seminare&apos;&#x0D;&#x0A;- Original element: &apos;oo.ego8769.sem07.person.AgePersobComparator&apos;&#x0D;&#x0A;- Renamed element: &apos;oo.ego8769.sem07.person.AgePersonComparator&apos;&#x0D;&#x0A;- Update references to refactored element&#x0D;&#x0A;- Update textual occurrences in comments and strings" description="Rename type &apos;AgePersobComparator&apos;" flags="589830" id="org.eclipse.jdt.ui.rename.type" input="/src&lt;oo.ego8769.sem07.person{AgePersobComparator.java[AgePersobComparator" matchStrategy="1" name="AgePersonComparator" qualified="false" references="true" similarDeclarations="false" stamp="1460627641418" textual="false" version="1.0"/>
+</session>

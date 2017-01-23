@@ -1,0 +1,15 @@
+1466421010256	Move compilation unit
+1466422721609	Move compilation unit
+1466426009177	Delete element
+1466427663998	Rename field '_socket'
+1466437288619	Move compilation unit
+1466685566379	Move compilation unit
+1466750432146	Rename local variable 'userLoginDaten'
+1466768556884	Encapsulate field '_frameServer'
+1466837874850	Delete element
+1466934871359	Delete element
+1466937010913	Rename type 'FrameClient'
+1466942618502	Delete element
+1466946668266	Delete element
+1466948193731	Rename local variable 'login'
+1466949860800	Delete element

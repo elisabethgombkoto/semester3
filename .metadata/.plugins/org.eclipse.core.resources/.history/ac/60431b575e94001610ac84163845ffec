@@ -1,0 +1,8 @@
+package hue02.SortierAlgorithmen;
+
+public class QuickSort implements Sort {
+
+	
+
+
+}

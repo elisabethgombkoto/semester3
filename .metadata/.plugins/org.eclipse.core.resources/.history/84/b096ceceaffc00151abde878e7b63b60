@@ -1,0 +1,8 @@
+package oo.ego8769.sem06.vererbung;
+
+public class Animal {
+	public void shout(){
+		System.out.println("HMFL");
+	}
+//TODO Singelton noch zu implementieren
+}

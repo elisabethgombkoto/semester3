@@ -1,0 +1,38 @@
+/**ego8769
+ * 
+ */
+package oo.ego8769.hue03.bsp01;
+
+import oo.ego8769.hue01.bsp02.Point;;
+
+/**
+ * @author Elisabeth
+ *
+ */
+public class Product {
+
+	private int _weight;
+	private String _name;
+	private int _volume;
+	private Point _point;
+
+	public Product(int weight, String name, int volume, Point point) {
+		_weight = weight;
+		_name = name;
+		_volume = volume;
+		_point = point;
+	}
+
+	public int getWeight() {
+		return _weight;
+	}
+
+	public String getName() {
+		return _name;
+	}
+
+	public int getVolume() {
+		return _volume;
+	}
+
+}

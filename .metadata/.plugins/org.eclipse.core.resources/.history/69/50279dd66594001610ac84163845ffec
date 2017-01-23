@@ -1,0 +1,11 @@
+package hue02.SortierAlgorithmen;
+
+public class QuickSort implements Sort {
+
+	@Override
+	public int[] sort(int[] sortieren) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

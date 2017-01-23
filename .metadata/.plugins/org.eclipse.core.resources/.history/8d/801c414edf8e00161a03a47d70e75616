@@ -1,0 +1,12 @@
+package hue01.grobanalyse.ego8769;
+
+public class RandomNummber {
+
+	private int _randomNummber;
+
+	public RandomNummber(int randomNummber) {
+		randomNummber = _randomNummber;
+
+	}
+
+}

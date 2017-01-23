@@ -1,0 +1,28 @@
+package oo.ego8769.hue06.labirinth;
+
+public class Field extends MapeSite {
+
+	private MapeSite east;
+
+	public Field() {
+
+	}
+
+	public void conect(Direction direction, MapeSite field) {
+		switch (direction) {
+		case east:
+			east = field;
+			break;
+		case north:
+			break;
+		case south:
+			break;
+		case west:
+			break;
+		default:
+			break;
+
+		}
+	}
+
+}

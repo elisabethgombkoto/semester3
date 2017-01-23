@@ -1,0 +1,43 @@
+;JBuilder -- PROJECT FILE VERSION {1.05} - do not alter this line!
+;--- main project settings
+[Project]
+Name=Expr.jpr
+DefaultDir=.
+ProjectHtml=
+UseJavaDefaults=0
+ClassPath=..\..\pip;C:\Programme\JBuilder\lib\jbcl.zip;C:\Programme\JBuilder\lib\jgl.zip;C:\Programme\JBuilder\java\lib\classes.zip;\SD\JAVA\Class
+SourcePath=..\..\pip;..\Expr;C:\Programme\JBuilder\bin;\sd\java\source;C:\Programme\JBuilder\java\src.zip;C:\Programme\JBuilder\src\jgl-src.zip
+CompilerSourcePath=..\..\pip;..\Expr;C:\Programme\JBuilder\bin;C:\Programme\JBuilder\java\src.zip;C:\Programme\JBuilder\src\jgl-src.zip
+OutPath=..\Expr
+DefaultRunnable=.\JExpr.java
+DebugInfo=1
+CheckStable=1
+MakeStable=1
+Deprecations=0
+etacsufbo=0
+ShowWarnings=1
+ExcludeClass=
+Encoding=
+Parameters=
+JavaVMParameters=
+CompileFirst=1
+UseExecutionLog=0
+
+;--- Project contents
+[Contents]
+file:///.\Expr.java
+file:///.\JExpr.java
+file:///.\Token.java
+file:///.\ExprTokenizer.java
+file:///.\E.html
+file:///.\Stack.java
+
+[Params]
+Title=Your Product Name
+Author=Your Name
+Company=Your Company
+Copyright=Copyright (c) 1997
+Description=Your description
+ShowDirTab=1
+
+;--- DONE

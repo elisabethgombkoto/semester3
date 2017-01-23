@@ -1,0 +1,580 @@
+
+package oo.ego8769.hue09.Expr ;
+/* Alle Dateien in ./Expr  und Compileren mit:
+ *
+ * javac -d . Expr/Token.java
+ * javac -d . Expr/Expr.java
+ * javac -d . Expr/JExpr.java
+ *
+ */
+
+
+
+import java.util.Hashtable;
+import java.util.Vector;
+
+/**
+ * Object Orientierter Expression Parser Berechnenet eine Arithmetische
+ * ausdrueck aus. Features: Beliebig vielle variablen definierbar. Benutzt eine
+ * Stream - d.h es kommt ohne Token look-aheads
+ *
+ * Die Klasse stellt eine sehr leicht erweitbares OOP Paket da.
+ *
+ *
+ * Benutzt java.io.StreamTokenizer um den String zu Zerlegen
+ *
+ * Zuweisung kann wie in 'C' benutzt werden.. z.B 1 + a = 2 + 5
+ *
+ * @author mudi@obada.com
+ */
+
+public class Expr {
+
+	private Token lastlastToken;
+	private Token lastToken;
+
+	private Hashtable idTable;
+
+	private Stack opStack;
+	private Stack paramStack;
+
+	private ExprTokenizer exprTokenizer;
+
+	private int braces = 0; /* fehler ueberprüfund für Klammern */
+	private boolean ready;
+
+	// better, use a Vector
+	Vector errors = new Vector();
+
+	/**
+	 * StreamTokenizer & Hashtable Initializieren String s wird aus
+	 */
+	public Expr() {
+
+		resetState();
+
+		/*
+		 * Gott rete uns von if-else "leicht zu erweitern"
+		 */
+		idTable = new Hashtable();
+
+		idTable.put("(", new BracketOpen());
+		idTable.put(")", new BracketClose());
+		idTable.put("=", new Assignment());
+
+		idTable.put("+", new Add());
+		idTable.put("-", new Sub());
+		idTable.put("*", new Mul());
+		idTable.put("/", new Div());
+		idTable.put("%", new Mod());
+		idTable.put(":", idTable.get("/"));
+		idTable.put("^", new Pow());
+
+		idTable.put(">", new Max());
+		idTable.put("<", new Min());
+
+		idTable.put("e", new Number(java.lang.Math.E));
+		idTable.put("-e", new Number(-java.lang.Math.E));
+		idTable.put("i", new Number(Double.POSITIVE_INFINITY));
+		idTable.put("-i", new Number(Double.NEGATIVE_INFINITY));
+
+		idTable.put("Pi", new Number(java.lang.Math.PI));
+		idTable.put("NaN", new Number(Double.NaN));
+
+		idTable.put("r", new Random());
+		idTable.put("random", idTable.get("r"));
+
+		idTable.put("sin", new Sin());
+		idTable.put("cos", new Cos());
+		idTable.put("tan", new Tan());
+		idTable.put("asin", new Asin());
+		idTable.put("acos", new Acos());
+		idTable.put("atan", new Atan());
+		idTable.put("log", new Log());
+		idTable.put("exp", new Exp());
+		idTable.put("sqrt", new Sqrt());
+		idTable.put("abs", new Abs());
+
+	}
+
+	/**
+	 * Setzt Zustand zurück als vorbereitung fuer neuer Berechnungsvorgang.
+	 */
+	private void resetState() {
+
+		errors = new Vector();
+		exprTokenizer = null;
+
+		lastToken = null;
+		lastlastToken = null;
+		ready = false;
+		braces = 0;
+
+		opStack = new Stack();
+		paramStack = new Stack();
+
+	}
+
+	/**
+	 * Ordnet beliebe Variable name den Wert f
+	 *
+	 * @see Hashtable
+	 * @returns null or old object
+	 */
+	public Object setVariable(String name, double f) {
+		return idTable.put(name, new Variable(name, f));
+	}
+
+	/**
+	 * Gibt letzter Fehler zurück ohne sie zu entfernen
+	 * 
+	 * @return String message or null wenn keiner Fehler
+	 * @see #getError()
+	 */
+	public String peekError() {
+		if (errors.isEmpty())
+			return null;
+		else
+			return (String) errors.firstElement();
+	}
+
+	/**
+	 * Gibt letzter Fehler zurück und zu entfernt ihn von der Fehler liste
+	 * 
+	 * @return String message or null wenn keiner Fehler
+	 * @see #peekError()
+	 */
+	public String getError() {
+		if (errors.isEmpty())
+			return null;
+		String s = (String) errors.firstElement();
+		errors.removeElement(s);
+		return s;
+	}
+
+	public void clearError() {
+		errors = new Vector();
+	}
+
+	private void setError(String s) {
+		errors.addElement(s);
+	}
+
+	/**
+	 * Token look ahead
+	 */
+	protected Token peekToken() {
+		return getToken(exprTokenizer, true);
+	}
+
+	/**
+	 * Gets next Token
+	 */
+	protected Token nextToken() {
+		return getToken(exprTokenizer, false);
+	}
+
+	/**
+	 * Returns next Token Object from the String to be Evaluated Used by
+	 * peekToken() and nextToken()
+	 *
+	 * @see #peekToken()
+	 * @see #nextToken()
+	 */
+
+	protected Token getToken(ExprTokenizer st, boolean peekOnly) {
+
+		Token token;
+		String ts = null;
+		int tt;
+
+		/*
+		 * StreamTokenizer String holen..
+		 */
+		try {
+			tt = st.nextToken();
+		} catch (Exception e) {
+			return null;
+		}
+
+		/*
+		 * Konvert String to Token by lookint in id Hashtable
+		 */
+		if (tt == st.TT_WORD) {
+			Object o = idTable.get(st.sval);
+			if (o == null) {
+				o = new Literal(st.sval); // Neues ding..
+			}
+			token = (Token) o;
+		} else if (tt == st.TT_NUMBER) {
+			token = new Number(st.nval);
+		} else /* EOF */ {
+			token = null;
+		}
+
+		/*
+		 * used by peekToken()
+		 */
+		if (peekOnly) {
+			st.pushBack();
+		}
+
+		return token;
+	}
+
+	/*
+	 * Syntax check first...
+	 */
+	private boolean checkSyntax(Token token) {
+		boolean ret_val = false;
+
+		if (token instanceof Assignment && !(lastToken instanceof Literal || lastToken instanceof Variable)) {
+			/* chk me 1st */
+			if (lastToken == null)
+				setError(token.toString() + " cannot start expression");
+			else
+				setError("l-value expected before '" + token.toString() + "'. found '" + lastToken.toString() + "'");
+			ret_val = true; // asumme
+
+		} else if (token == null) {
+			ret_val = true; // asumme
+			if (!(lastToken instanceof BracketClose || lastToken == null || lastToken instanceof Number
+					|| lastToken instanceof Variable)) {
+				setError("EOS unexpected after '" + lastToken.toString() + "'");
+			} else if (braces != 0) {
+				setError("unbalanced brackets!");
+			} else {
+				ret_val = false; // asumme
+			}
+		} else if (token instanceof Number || token instanceof Variable || token instanceof Function
+				|| token instanceof BracketOpen) {
+
+			if (!(lastToken == null || lastToken instanceof Operator || lastToken instanceof Function
+					|| lastToken instanceof BracketOpen || lastToken instanceof Assignment)) {
+				setError("'" + token.toString() + "' unexpected after '" + lastToken.toString() + "'");
+				ret_val = true;
+			}
+
+		} else if (token instanceof Operator || token instanceof BracketClose) {
+			if (!(lastToken instanceof Number || lastToken instanceof Variable || lastToken instanceof BracketClose)) {
+				if (lastToken == null) {
+					setError("Cannot start Expression with '" + token.toString() + "'");
+				} else {
+					setError("'" + token.toString() + "' unexpected after '" + lastToken.toString() + "'");
+				}
+				ret_val = true;
+			}
+
+		} else if (token instanceof Assignment) {
+			if (!(lastToken instanceof Literal || lastToken instanceof Variable)) {
+				opStack.pop(); // Remove that literal from stack
+				setError("Undefined literal '" + lastToken.toString() + "' before '" + token.toString() + "'");
+				ret_val = true;
+			}
+		} else if (token instanceof Literal) {
+			// a = b = 3
+			if (!(lastToken == null || lastToken instanceof Assignment)) {
+				setError("Unknown Token '" + token.toString() + "'");
+				ret_val = true;
+			}
+		} else {
+			setError("Internal Error: Systax for Token " + token.toString() + " unchecked!");
+		}
+
+		return ret_val;
+	}
+
+	/**
+	 *
+	 * Universal Token processor - works for stateless interface Kommt durch
+	 * ohne lookaheads - benutzt lediglich lastLoken (fall Taschenrechner
+	 * Applet)
+	 *
+	 * @param token
+	 *            Token object das zu zu verarbeiten ist
+	 * @return true on Error
+	 * @see #getError()
+	 * @see #peekError()
+	 *
+	 */
+
+	public boolean processToken(Token token) {
+
+		boolean ret_val = false;
+
+		ret_val = checkSyntax(token);
+
+		/*
+		 * Wenn Fehler nicht verarbeiten
+		 */
+		if (!ret_val) {
+
+			if (token instanceof Number || token instanceof Variable) {
+
+				paramStack.push(token);
+				/*
+				 * Don't eval if lastToken instance of funtion Wait for next
+				 * token - Funtions can thus use more that one param
+				 */
+			} else if (token instanceof Function) {
+
+				opStack.push(token);
+
+			} else if (token instanceof Operator) {
+
+				if (lastToken instanceof Operator) {
+					/*
+					 * Input something like 4 * +2 Must do some acrobatics...
+					 */
+					setError("Operator '" + token.toString() + "' afer Operator '" + lastToken.toString() + "' ?");
+					ret_val = true;
+				} else if (lastToken == null) {
+					setError("Operator '" + token.toString() + "' not valid start of expression!");
+					ret_val = true;
+				} else {
+					/*
+					 * Try Reduce Expression Stack Sehr wichtig! paramStack
+					 * minimal halten
+					 */
+					Token lo; // last operator
+					while (true) {
+						lo = opStack.peek();
+						if (lo instanceof Function || (lo instanceof Operator && lo.priority() >= token.priority())) {
+							paramStack.push(new Number(opStack.pop().eval(paramStack)));
+						} else {
+							break;
+						}
+					}
+
+					/*
+					 * Put into reduced stack
+					 */
+					opStack.push(token);
+				}
+
+			} else if (token instanceof BracketOpen) {
+
+				braces++;
+				opStack.push(token); // Begin new (Term)
+
+			} else if (token instanceof Assignment) {
+
+				/*
+				 * lastToken should be Literal (now in opStack) or Variable now
+				 * in param stack must unify! i.e param => op for Variable
+				 */
+				if (lastToken instanceof Variable) {
+					Token op = paramStack.pop();
+					// assume op instanve of Variable
+					opStack.push(op);
+				} else if (!(lastToken instanceof Literal)) {
+					opStack.pop(); // Dump Assigment
+					if (lastToken == null) {
+						setError("assignment missing l-value");
+						ret_val = true;
+					} else {
+						setError("invalid l-value '" + lastToken.toString() + "'");
+						ret_val = true;
+					}
+				}
+				opStack.push(token);
+
+			} else if (token instanceof Literal) {
+
+				// Prepare as variable
+				opStack.push(token);
+
+			} else if (token == null || token instanceof BracketClose) {
+
+				if (token instanceof BracketClose) {
+					braces--;
+				}
+
+				// Almost The End.. Bei ')' auch aufhoeren
+				while (!opStack.empty()) {
+					Token op = opStack.pop();
+					if (op instanceof BracketOpen) {
+						op = opStack.peek();
+						if (op instanceof Function) {
+							// func(x)
+							opStack.pop();
+							paramStack.push(new Number(op.eval(paramStack)));
+							break;
+						} else {
+							; // UnaryOps not yet supported...
+						}
+						if (token instanceof BracketClose) {
+							break; // C'est ca // (ausdruck)
+						}
+					} else if (op instanceof Assignment) {
+						op = opStack.pop(); // get L-Value
+						if (op == null) {
+							setError("Internal Error: opStack empty expecting L-Value!");
+						} else if (op instanceof Literal || op instanceof Variable) {
+							setVariable(op.toString(), paramStack.peek().eval(paramStack));
+						} else {
+							ret_val = true;
+							setError("Assignmen to non-variable '" + op.toString() + "'");
+						}
+					} else if (op instanceof Literal) {
+						// nee
+						ret_val = true;
+						setError("Use of undefined Literal '" + op.toString() + "'");
+						break;
+					} else if (op != null) {
+						// Operator der schon richtig auf opStack liegt
+						paramStack.push(new Number(op.eval(paramStack)));
+					}
+				}
+
+			} else {
+				setError("Integrity Error - Unhandled Token Type " + token.toString());
+				ret_val = true;
+			}
+		}
+
+		/*
+		 * This is stupid...
+		 */
+		if (lastlastToken != null && paramStack.size() == 1) {
+			ready = true;
+		} else {
+			ready = false;
+		}
+
+		lastlastToken = lastToken;
+		lastToken = token;
+
+		return ret_val;
+
+	} /* processToken */
+
+	/**
+	 * evalToken() Nimmt ein String und Berechnet dazu Stream Mode
+	 */
+
+	public void evalToken(String Expression) {
+
+		/*
+		 * False zeruckt geben wenn ergebnis bereit steht d.h processToken
+		 * Fehler || und nur einer param in paramStack
+		 */
+
+		if (Expression == null)
+			return;
+
+		exprTokenizer = new ExprTokenizer(Expression);
+
+		Token token = null;
+		boolean err = false;
+
+		ready = false;
+
+		/*
+		 * Neue Stream verarbeiten
+		 */
+		do {
+			token = nextToken();
+			if (token != null) {
+				err = processToken(token);
+				if (err) {
+					// System.err.println(getError());
+					ready = false;
+				}
+			}
+
+		} while (token != null);
+
+	}
+
+	public void evalToken(double d) {
+
+		boolean err;
+
+		err = processToken(new Number(d));
+		if (err) {
+			// System.err.println(getError());
+			ready = false;
+		}
+
+	}
+
+	public void evalToken(float f) {
+		evalToken((double) f);
+	}
+
+	public void evalToken(Token token) {
+		processToken(token);
+	}
+
+	/**
+	 * Wenn canPeek() dann liefert peekValue ein Zwischen ergebnis...
+	 *
+	 * Merke: Fuer diese Methoden musste ich das vereinfachung der paramStack
+	 * massive ueberarbeiten. Wozu? Nur fuer den Taschenrechner... haette ich
+	 * schneller einen einfacherer parser geschreiben ;-)
+	 */
+	public boolean canPeek() {
+		return ready;
+	}
+
+	/**
+	 * Gibt Teil ergebnis zurueck
+	 */
+	public double peekValue() {
+
+		Token token;
+
+		switch (paramStack.size()) {
+		case 0:
+			setError(" opps! paramStack empty - no valid result!");
+			token = new Number(Double.NaN);
+			break;
+		default:
+			/* we're streaming.. it's ok */
+			token = paramStack.bottom();
+		}
+
+		return token.eval(paramStack);
+
+	}
+
+	/**
+	 * Fertigrechnung anfordern Fuer Benutzung mit evalTokens();
+	 */
+
+	public double getValue() {
+
+		Token token;
+
+		processToken((Token) null);
+
+		switch (paramStack.size()) {
+		case 0:
+			setError(" opps! paramStack empty - no valid result!");
+			token = new Number(Double.NaN);
+			break;
+		case 1:
+			token = paramStack.peek();
+			break;
+		default:
+			token = paramStack.peek();
+			setError(" opps! paramStack not empty - incomplete result!");
+		}
+
+		return token.eval(paramStack);
+
+	}
+
+	/**
+	 * Nimmt vollstaendige Expression und gibt sein wert zurueck
+	 */
+	public double evalExpr(String Expression) {
+
+		resetState();
+		evalToken(Expression);
+		return getValue();
+
+	}
+
+}

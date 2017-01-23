@@ -1,0 +1,53 @@
+package oo.ego8769.hue06.labirinth;
+
+public class Neighbor extends MapeSite {
+	Field _f1;
+	Direction _fd1;
+	Field _f2;
+	Door _d;
+	Wall _w;
+
+	public Neighbor(Field f1, Field f2, Direction fd1) {
+		_f1 = f1;
+		_f2 = f2;
+		_fd1 = fd1;
+	}
+
+	public Neighbor(Field f1, Door d, Direction fd1) {
+		_f1 = f1;
+		_fd1 = fd1;
+		_d = d;
+
+	}
+
+	public Neighbor(Field f1, Wall w, Direction fd1) {
+		_f1 = f1;
+		_w = w;
+		_fd1 = fd1;
+	}
+
+	public Field get_f1() {
+		return _f1;
+	}
+
+	public void set_f1(Field _f1) {
+		this._f1 = _f1;
+	}
+
+	public Direction get_fd1() {
+		return _fd1;
+	}
+
+	public void set_fd1(Direction _fd1) {
+		this._fd1 = _fd1;
+	}
+
+	public Field get_f2() {
+		return _f2;
+	}
+
+	public void set_f2(Field _f2) {
+		this._f2 = _f2;
+	}
+
+}

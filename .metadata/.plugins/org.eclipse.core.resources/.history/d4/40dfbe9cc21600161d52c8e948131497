@@ -1,0 +1,19 @@
+package oo.ego8769.hue06.labirinth;
+
+public enum Direction {
+	north, south, west, east;
+
+	public Direction getOppositeDirection() {
+		switch (this) {
+		case north:
+			return south;
+		case south:
+			return north;
+		case west:
+			return east;
+		case east:
+			return west;
+		}
+
+	}
+}

@@ -1,0 +1,66 @@
+package oo.ego8769.hue06.labirinth;
+
+import java.util.ArrayList;
+
+public class Neighborhood {
+	private Direction _direction;
+	private ArrayList<Neighbor> _neighbors = new ArrayList<Neighbor>();
+
+	public Neighborhood(// Neighbor neighbor
+	) {
+		_neighbors = new ArrayList<>();
+		// _neighbors.add(neighbor);
+	}
+
+	public ArrayList<Neighbor> get_neighbors() {
+		return _neighbors;
+	}
+
+	public boolean conect(Field f1, Field f2, Direction fd1) {
+
+		// if (canConect(f2, f2)) {
+
+		if (Direction.east.equals(fd1)) {
+			Neighbor neighbor2 = new Neighbor(f1, f2, fd1);
+			Neighbor neighbor1 = new Neighbor(f2, f1, Direction.west);
+
+			_neighbors.add(neighbor2);
+			_neighbors.add(neighbor1);
+			return true;
+		} else if (Direction.west.equals(fd1)) {
+			Neighbor neighbor2 = new Neighbor(f1, f2, fd1);
+			Neighbor neighbor1 = new Neighbor(f1, f2, Direction.east);
+			_neighbors.add(neighbor2);
+			_neighbors.add(neighbor1);
+			return true;
+		} else if (Direction.north.equals(fd1)) {
+			Neighbor neighbor2 = new Neighbor(f1, f2, fd1);
+			Neighbor neighbor1 = new Neighbor(f1, f2, Direction.south);
+			_neighbors.add(neighbor2);
+			_neighbors.add(neighbor1);
+			return true;
+		} else if (Direction.south.equals(fd1)) {
+			Neighbor neighbor2 = new Neighbor(f1, f2, fd1);
+			Neighbor neighbor1 = new Neighbor(f1, f2, Direction.north);
+			_neighbors.add(neighbor2);
+			_neighbors.add(neighbor1);
+			// }
+			return true;
+		}
+		return false;
+	}
+
+	private boolean canConect(Field f1, Field f2) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public Direction getDirection() {
+		return _direction;
+	}
+
+	public void setDirection(Direction _direction) {
+		this._direction = _direction;
+	}
+
+}
